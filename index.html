@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Text-to-Speech Converter</title>
+    <script src="https://code.responsivevoice.org/responsivevoice.js"></script>
+</head>
+<body>
+    <h1>Text-to-Speech Converter</h1>
+    <textarea id="textToSpeak" placeholder="Enter text to convert"></textarea>
+    <label for="selectVoice">Select Voice:</label>
+    <select id="selectVoice">
+        <option value="UK English Male">UK English Male</option>
+        <option value="UK English Female">UK English Female</option>
+        <!-- Add more voice options here -->
+    </select>
+    <button onclick="speakText()" style="background-color: #0074D9; color: white; cursor: pointer;">Speak</button>
+<a id="downloadLink" style="display: none; background-color: #4CAF50; color: white; text-decoration: none; padding: 10px 20px; cursor: pointer;" href="" download="speech.mp3">Download MP3</a>
+
+    <script>
+        function speakText() {
+            const textToSpeak = document.getElementById("textToSpeak").value;
+            const selectedVoice = document.getElementById("selectVoice").value;
+            
+            // Generate speech and show the download link
+            responsiveVoice.speak(textToSpeak, selectedVoice, {
+                onend: function() {
+                    const downloadLink = document.getElementById("downloadLink");
+                    downloadLink.style.display = "block";
+                    responsiveVoice.download("speech.mp3", "text/mp3");
+                }
+            });
+        }
+    </script>
+</body>
+</html>
