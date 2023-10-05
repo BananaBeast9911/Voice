@@ -2,31 +2,49 @@
 <html>
 <head>
     <title>Text-to-Speech Converter</title>
+    <style>
+        body {
+            background-image: url('background.jpg'); /* Replace 'background.jpg' with your image file path */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
+        }
+        /* Add any additional CSS styles here */
+    </style>
     <script src="https://code.responsivevoice.org/responsivevoice.js"></script>
 </head>
 <body>
-    <h1>Text-to-Speech Converter</h1>
-    <textarea id="textToSpeak" placeholder="Enter text to convert"></textarea>
-    <label for="selectVoice">Select Voice:</label>
-    <select id="selectVoice">
-        <option value="UK English Male">UK English Male</option>
-        <option value="UK English Female">UK English Female</option>
-        <!-- Add more voice options here -->
-    </select>
-    <button onclick="speakText()" style="background-color: #0074D9; color: white; cursor: pointer;">Speak</button>
-<a id="downloadLink" style="display: none; background-color: #4CAF50; color: white; text-decoration: none; padding: 10px 20px; cursor: pointer;" href="" download="speech.mp3">Download MP3</a>
+    <div class="container">
+        <h1>Text-to-Speech Converter</h1>
+        <textarea id="textToSpeak" placeholder="Enter text to convert"></textarea>
+        <label for="selectVoice">Select Voice:</label>
+        <select id="selectVoice">
+            <option value="UK English Male">UK English Male</option>
+            <option value="UK English Female">UK English Female</option>
+            <!-- Add more voice options here -->
+        </select>
+        <button onclick="speakText()">Speak</button>
+        <a id="downloadLink" style="display: none; background-color: #4CAF50; color: white; text-decoration: none; padding: 10px 20px; cursor: pointer;" href="" download="speech.mp3">Download MP3</a>
+    </div>
 
     <script>
         function speakText() {
             const textToSpeak = document.getElementById("textToSpeak").value;
             const selectedVoice = document.getElementById("selectVoice").value;
-            
+
             // Generate speech and show the download link
             responsiveVoice.speak(textToSpeak, selectedVoice, {
-                onend: function() {
+                onend: function () {
                     const downloadLink = document.getElementById("downloadLink");
                     downloadLink.style.display = "block";
-                    responsiveVoice.download("speech.mp3", "text/mp3");
+
+                    // Generate a blob for the MP3 file
+                    const blob = new Blob([textToSpeak], { type: "audio/mpeg" });
+                    const url = URL.createObjectURL(blob);
+
+                    // Set the download link's href
+                    downloadLink.href = url;
                 }
             });
         }
